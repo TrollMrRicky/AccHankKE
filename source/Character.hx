@@ -605,6 +605,7 @@ class Character extends FlxSprite
 	}
 
 	private var danced:Bool = false;
+	private var dodgetimer:Float = 2;
 
 	/**
 	 * FOR GF DANCING SHIT
@@ -665,8 +666,21 @@ class Character extends FlxSprite
 						playAnim('danceRight');
 					else
 						playAnim('danceLeft');
+				
+				case 'bf':
+					if (animation.curAnim.name.startsWith('dodge')) {
+							dodgetimer --;
+							if (dodgetimer <= 0) {
+								playAnim('idle');
+								dodgetimer = 2;
+							}
+					}
+					else {
+						playAnim('idle');
+					}
 				default:
 					playAnim('idle');
+			
 			}
 		}
 	}
