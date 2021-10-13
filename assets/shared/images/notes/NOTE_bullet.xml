@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="NOTE_bullet.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Bullet Blue0000" x="0" y="0" width="66" height="102"/>
+	<SubTexture name="Bullet Blue Press0000" x="66" y="0" width="0" height="0" frameX="-107374182" frameY="-107374182" frameWidth="0" frameHeight="0"/>
+	<SubTexture name="Bullet Blue0000" x="66" y="0" width="102" height="66"/>
+	<SubTexture name="Bullet Blue Press0000" x="168" y="0" width="0" height="0" frameX="-107374182" frameY="-107374182" frameWidth="0" frameHeight="0"/>
+	<SubTexture name="Bullet Red0000" x="0" y="102" width="102" height="66"/>
+	<SubTexture name="Bullet Red Press0000" x="102" y="102" width="0" height="0" frameX="-107374182" frameY="-107374182" frameWidth="0" frameHeight="0"/>
+	<SubTexture name="Bullet Green0000" x="102" y="102" width="66" height="102"/>
+	<SubTexture name="Bullet Green Press0000" x="168" y="102" width="0" height="0" frameX="-107374182" frameY="-107374182" frameWidth="0" frameHeight="0"/>
+</TextureAtlas>

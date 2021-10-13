@@ -40,6 +40,8 @@ class Note extends FlxSprite
 
 	public var rating:String = "shit";
 
+	public var noteColors:Array<String> = ['purple', 'blue', 'green', 'red'];
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?_warning:Bool = false)
 	{
 		super();
@@ -136,10 +138,13 @@ class Note extends FlxSprite
 		}
 		if (warning)
 		{
-            loadGraphic(Paths.image('warningNote'));
-		    setGraphicSize(Std.int(width * 0.7));
-		    updateHitbox();
-		    antialiasing = true;
+            frames = Paths.getSparrowAtlas('notes/NOTE_bullet');
+			
+			for (i in 0...4) {
+				animation.addByPrefix(noteColors[i] + "Scroll", "Bullet" + noteColors[i]);
+			}
+			setGraphicSize(Std.int(width * 0.7));
+
 		}
 
 		switch (noteData)
