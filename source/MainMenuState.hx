@@ -29,13 +29,12 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
-	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
+	var optionShit:Array<String> = ['challenge', 'options'];
 	#end
 
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
+	var curSelectedText:FlxText;
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
@@ -46,6 +45,8 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	public static var finishedFunnyMove:Bool = false;
+	
+	public var imageThing:FlxSprite;
 
 	override function create()
 	{
@@ -85,6 +86,10 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		// magenta.scrollFactor.set();
 
+		var behindOptions = new FlxSprite(0, 0).loadGraphic(Paths.image('behind_options', 'shared'));
+		behindOptions.scrollFactor.set();
+		add(behindOptions);
+
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
@@ -98,7 +103,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
-			menuItem.screenCenter(X);
+			//menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set();
 			menuItem.antialiasing = true;
@@ -109,17 +114,22 @@ class MainMenuState extends MusicBeatState
 						changeItem();
 					}});
 			else
-				menuItem.y = 60 + (i * 160);
+				menuItem.y = 4 + (i * 340);
+				menuItem.x = 4 + (i * 170);	// Targeting Online VS menu Maybe?
 		}
 
 		firstStart = false;
 
-		FlxG.camera.follow(camFollow, null, 0.60 * (60 / FlxG.save.data.fpsCap));
+		FlxG.camera.follow(camFollow, null, 1);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : ""), 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, 'Accelerant KE (1.5.4)', 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+		curSelectedText = new FlxText(12, FlxG.height - 44, 0, '${optionShit[curSelected]}', 12);
+		curSelectedText.scrollFactor.set();
+		curSelectedText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(curSelectedText);
 
 		// NG.core.calls.event.logEvent('swag').send();
 
@@ -130,6 +140,9 @@ class MainMenuState extends MusicBeatState
 			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
 
 		changeItem();
+		
+		//imageThing = new FlxSprite(1232, 1232).loadGraphic(Paths.image(optionShit[curSelected], 'shared'));
+		//imageThing.scrollFactor.set();
 
 		super.create();
 	}
@@ -230,7 +243,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			spr.screenCenter(X);
+			//spr.screenCenter(X);
 		});
 	}
 	
@@ -240,21 +253,20 @@ class MainMenuState extends MusicBeatState
 
 		switch (daChoice)
 		{
-			case 'story mode':
-				FlxG.switchState(new StoryMenuState());
-				trace("Story Menu Selected");
-			case 'freeplay':
+			case 'challenge':
 				FlxG.switchState(new FreeplayState());
 
 				trace("Freeplay Menu Selected");
 
 			case 'options':
 				FlxG.switchState(new OptionsMenu());
+				trace('Options Menu Selected');
 		}
 	}
 
 	function changeItem(huh:Int = 0)
 	{
+		remove(imageThing);
 		if (finishedFunnyMove)
 		{
 			curSelected += huh;
@@ -271,10 +283,31 @@ class MainMenuState extends MusicBeatState
 			if (spr.ID == curSelected && finishedFunnyMove)
 			{
 				spr.animation.play('selected');
-				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
+				//camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 
 			spr.updateHitbox();
 		});
+
+		curSelectedText.text = '${optionShit[curSelected]}';
+		updateScreenStuff();
+	}
+
+	override function beatHit() {
+		super.beatHit();
+
+		imageThing.scale.set(1.1, 1.1);
+		trace(imageThing.scale.x + ' | ' + imageThing.scale.y);
+		new FlxTimer().start(0.1, function(tmr:FlxTimer)
+			{
+				imageThing.scale.set(1, 1);
+			});
+	}
+
+	function updateScreenStuff() {
+		remove(imageThing);
+		imageThing = new FlxSprite(700, 150).loadGraphic(Paths.image(optionShit[curSelected], 'shared'));
+		imageThing.scrollFactor.set();
+		add(imageThing);
 	}
 }

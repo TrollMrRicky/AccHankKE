@@ -120,7 +120,8 @@ class Note extends FlxSprite
 				setGraphicSize(Std.int(width * 0.7));
 				updateHitbox();
 				antialiasing = true;
-				if (halo)
+		}
+			if (halo)
 					{
 						frames = Paths.getSparrowAtlas('ALL_deathnotes');
 						animation.addByPrefix('greenScroll', 'Green Arrow');
@@ -128,23 +129,14 @@ class Note extends FlxSprite
 						animation.addByPrefix('blueScroll', 'Blue Arrow');
 						animation.addByPrefix('purpleScroll', 'Purple Arrow');
 					}
-					if (noteType == 2)
-						{
-							loadGraphic(Paths.image('warningNote'));
-							setGraphicSize(Std.int(width * 0.7));
-							updateHitbox();
-							antialiasing = true;
-						}
-		}
 		if (warning)
 		{
-            frames = Paths.getSparrowAtlas('notes/NOTE_bullet');
-			
-			for (i in 0...4) {
-				animation.addByPrefix(noteColors[i] + "Scroll", "Bullet" + noteColors[i]);
-			}
-			setGraphicSize(Std.int(width * 0.7));
-
+			frames = Paths.getSparrowAtlas('NOTE_bullet');
+			animation.addByPrefix('greenScroll', 'Bullet UP');
+			animation.addByPrefix('redScroll', 'Bullet RIGHT');
+			animation.addByPrefix('blueScroll', 'Bullet DOWN');
+			animation.addByPrefix('purpleScroll', 'Bullet LEFT');
+			setGraphicSize(Std.int(width * 0.96));
 		}
 
 		switch (noteData)
